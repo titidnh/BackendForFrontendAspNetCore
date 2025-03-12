@@ -1,6 +1,6 @@
 # BackendForFrontendAspNetCore
 
-
+```sh
 using BackendForFrontend.AspNetCore;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
@@ -47,3 +47,4 @@ app.MapControllers();
 app.UseStaticFiles();
 app.UseBackendForFrontend(configurationForBackendFrontent);
 app.Run();
+```
