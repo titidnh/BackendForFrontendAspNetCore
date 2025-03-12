@@ -55,7 +55,7 @@ namespace BackendForFrontendAspNetCore
                 options.Scope.Add("email");
                 options.Scope.Add("roles");
                 options.Scope.Add("offline_access");
-                options.CallbackPath = new PathString("/callback");
+                options.CallbackPath = new PathString(backendForFrontendConfiguration.CallbackPath);
                 options.ClaimsIssuer = backendForFrontendConfiguration.ClaimsIssuer;
                 if (!string.IsNullOrEmpty(backendForFrontendConfiguration.ValidIssuer)
                     && !string.IsNullOrEmpty(backendForFrontendConfiguration.ValidAudience))

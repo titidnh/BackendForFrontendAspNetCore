@@ -18,6 +18,8 @@ namespace BackendForFrontendAspNetCore
 
         public string? ValidAudience { get; set; }
 
+        public string CallbackPath { get; set; } = "/callback";
+
         public OpenIdConnectEvents? OpenIdConnectEvents { get; set; }
     }
 }
