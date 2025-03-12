@@ -20,6 +20,8 @@ namespace BackendForFrontendAspNetCore
 
         public string CallbackPath { get; set; } = "/callback";
 
+        public string[] Scopes { get; set; } = new[] { "openid", "profile", "email", "offline_access" };
+
         public OpenIdConnectEvents? OpenIdConnectEvents { get; set; }
     }
 }

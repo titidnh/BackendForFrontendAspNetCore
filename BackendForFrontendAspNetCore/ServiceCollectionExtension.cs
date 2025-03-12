@@ -50,11 +50,8 @@ namespace BackendForFrontendAspNetCore
                 options.ResponseType = OpenIdConnectResponseType.Code;
                 options.SaveTokens = true;
                 options.UsePkce = true;
-                options.Scope.Add("openid");
-                options.Scope.Add("profile");
-                options.Scope.Add("email");
-                options.Scope.Add("roles");
-                options.Scope.Add("offline_access");
+                foreach (var scope in backendForFrontendConfiguration.Scopes)
+                    options.Scope.Add(scope);
                 options.CallbackPath = new PathString(backendForFrontendConfiguration.CallbackPath);
                 options.ClaimsIssuer = backendForFrontendConfiguration.ClaimsIssuer;
                 if (!string.IsNullOrEmpty(backendForFrontendConfiguration.ValidIssuer)
@@ -67,8 +64,7 @@ namespace BackendForFrontendAspNetCore
                         ValidateAudience = true,
                         ValidAudience = backendForFrontendConfiguration.ValidAudience,
                         ValidateLifetime = true,
-                        ClockSkew = TimeSpan.Zero,
-                        RoleClaimType = "roles"
+                        ClockSkew = TimeSpan.Zero
                     };
                 }
 
