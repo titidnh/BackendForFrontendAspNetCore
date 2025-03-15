@@ -10,7 +10,7 @@ namespace BackendForFrontendAspNetCore.Auth0Provider
     {
         private static readonly HttpClient client = new HttpClient();
 
-        public static BackendForFrontendConfiguration CreateConfiguration(string auth0Domain, string clientId, string clientSecret, string frontendUrl)
+        public static BackendForFrontendConfiguration CreateConfiguration(string auth0Domain, string clientId, string clientSecret, string frontendUrl, bool activateRoles = false)
         {
             var configurationForBackendFrontent = new BackendForFrontendConfiguration()
             {
@@ -25,22 +25,25 @@ namespace BackendForFrontendAspNetCore.Auth0Provider
                 {
                     OnTokenValidated = async context =>
                     {
-                        var claimsIdentity = context.Principal?.Identity as System.Security.Claims.ClaimsIdentity;
-
-                        if (claimsIdentity != null)
+                        if (activateRoles)
                         {
-                            var userId = context.SecurityToken.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
-                            var roles = await GetUserRolesAsync(new Auth0RoleConfiguration
-                            {
-                                ClientId = clientId,
-                                ClientSecret = clientSecret,
-                                Auth0Domain = $"https://{auth0Domain}",
-                                Audience = $"https://{auth0Domain}" + "/api/v2/"
-                            }, userId!);
+                            var claimsIdentity = context.Principal?.Identity as System.Security.Claims.ClaimsIdentity;
 
-                            foreach (var role in roles)
+                            if (claimsIdentity != null)
                             {
-                                claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
+                                var userId = context.SecurityToken.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+                                var roles = await GetUserRolesAsync(new Auth0RoleConfiguration
+                                {
+                                    ClientId = clientId,
+                                    ClientSecret = clientSecret,
+                                    Auth0Domain = $"https://{auth0Domain}",
+                                    Audience = $"https://{auth0Domain}" + "/api/v2/"
+                                }, userId!);
+
+                                foreach (var role in roles)
+                                {
+                                    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
+                                }
                             }
                         }
                     },
