@@ -48,3 +48,29 @@ app.UseStaticFiles();
 app.UseBackendForFrontend(configurationForBackendFrontent);
 app.Run();
 ```
+
+# Auth0 Helpers with roles
+
+```sh
+using BackendForFrontendAspNetCore;
+using BackendForFrontendAspNetCore.Auth0Provider;
+
+var builder = WebApplication.CreateBuilder(args);
+var auth0Domain = "****.eu.auth0.com";
+var clientId = "";
+var clientSecret = "";
+var frontendUrl = "";
+var configurationForBackendFrontent = Auth0Helper.CreateConfiguration(auth0Domain, clientId, clientSecret, frontendUrl, true);
+builder.Services.EnableCorsPolicyForBackendForFrontend(configurationForBackendFrontent);
+builder.Services.EnableBackendForFrontend(configurationForBackendFrontent);
+builder.Services.AddControllers();
+var app = builder.Build();
+app.UseRouting();
+app.UseCorsPolicyForBackendForFrontend();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+app.UseStaticFiles();
+app.UseBackendForFrontend(configurationForBackendFrontent);
+app.Run();
+```
