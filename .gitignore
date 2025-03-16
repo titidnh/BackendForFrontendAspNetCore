@@ -53,3 +53,4 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 /BackendForFrontendAspNetCore/.vs/BackendForFrontendAspNetCore
+/BackendForFrontendAspNetCore/.vs/ProjectEvaluation

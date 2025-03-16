@@ -10,7 +10,7 @@ namespace BackendForFrontendAspNetCore.Auth0Provider
     {
         private static readonly HttpClient client = new HttpClient();
 
-        public static BackendForFrontendConfiguration CreateConfiguration(string auth0Domain, string clientId, string clientSecret, string frontendUrl, bool activateRoles = false)
+        public static BackendForFrontendConfiguration CreateConfiguration(string auth0Domain, string clientId, string clientSecret, string frontendUrl, bool activateRoles = false, string? customCallbackPath = null)
         {
             var configurationForBackendFrontent = new BackendForFrontendConfiguration()
             {
@@ -57,6 +57,11 @@ namespace BackendForFrontendAspNetCore.Auth0Provider
 
                 }
             };
+
+            if (customCallbackPath != null)
+            {
+                configurationForBackendFrontent.CallbackPath = customCallbackPath;
+            }
 
             return configurationForBackendFrontent;
         }
