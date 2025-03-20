@@ -23,6 +23,13 @@ namespace BackendForFrontendAspNetCore.Auth0Provider
                 ValidAudience = clientId,
                 OpenIdConnectEvents = new OpenIdConnectEvents
                 {
+                    OnRedirectToIdentityProvider = context =>
+                    {
+                        var forwardedProto = context.Request.Headers["X-Forwarded-Proto"].ToString();
+                        if (forwardedProto == "https")
+                            context.ProtocolMessage.RedirectUri = context.ProtocolMessage.RedirectUri.Replace("http://", "https://");
+                        return Task.CompletedTask;
+                    },
                     OnTokenValidated = async context =>
                     {
                         if (activateRoles)

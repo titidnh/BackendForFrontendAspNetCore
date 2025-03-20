@@ -16,15 +16,16 @@ namespace BackendForFrontendAspNetCore
                 options.AddPolicy("AllowSpecificOriginForFrontend",
                     builder => builder
                         .WithOrigins(backendForFrontendConfiguration.FrontendUrl)
+                        .AllowAnyHeader()
                         .AllowCredentials()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
+                        .AllowAnyMethod());
             });
         }
 
         public static void EnableBackendForFrontend(this IServiceCollection services, BackendForFrontendConfiguration backendForFrontendConfiguration)
         {
             services.AddDataProtection();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -38,6 +39,7 @@ namespace BackendForFrontendAspNetCore
                 options.Cookie.SameSite = SameSiteMode.Strict;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 options.SlidingExpiration = true;
+                options.Cookie.IsEssential = true;
                 options.LoginPath = "/api/auth/login";
                 options.LogoutPath = "/api/auth/logout";
                 options.DataProtectionProvider = services.BuildServiceProvider().GetService<IDataProtectionProvider>();
